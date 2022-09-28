@@ -1,0 +1,44 @@
+<!--description-->
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+        {{ product.desc|truncatewords:150 }}
+{% endblock %}
+
+<!--title-->
+{% block title %}
+    {% if category %}
+        {{ product.name }} - EKart
+
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row myprod">
+    <div class="mx_auto">
+        <p><a href="{% url 'ekart:categorypage' %}">HOME</a> | <a href="{{ product.category.get_url }}">{{ product.category }}</a>| {{ product.name }}</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+            <img src="{{ product.img.url }}" alt="{{product.name}}" height="500" width="500">
+        </div>
+
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+            <div>
+                <h1 class="myprod">{{product.name}}</h1>
+                <p>₹{{product.price}}</p>
+                <p class="titlepro">DESCRIPTION</p>
+                <p class="text-justify myprodtext">{{product.desc}}</p>
+                {% if product.stock <= 0 %}
+                <p class="text-justify myprodtext"><b>Out of stock</b></p>
+                {% else %}
+                <a class="btn btn-secondary" href="{% url 'cart:add_cart' product.id %}">Add to cart</a>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

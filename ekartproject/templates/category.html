@@ -1,0 +1,76 @@
+<!--description-->
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.desc|truncatewords:150 }}
+    {% else %}
+        Welcome to our shop, buy as many things you want at the best price
+    {% endif %}
+{% endblock %}
+
+<!--title-->
+{% block title %}
+    {% if category %}
+        {{ category.name }} - EKart
+    {% else %}
+        See our products
+    {% endif %}
+{% endblock %}
+<!--content-->
+{% block content %}
+{% if category %}
+    <div>
+        <div class="row my_row_class">
+            <div class="mx_auto">
+                <p><a href="{% url 'ekart:categorypage' %}">Our Products</a></p>
+            </div>
+        </div>
+
+    </div>
+{% endif %}
+<div class="mx_auto">
+    {% if category %}
+    <img class="my_image" src="{{ category.img.url }}" width="400" height="650" alt="{{ category.name }}">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">{{ category.name }}</h1>
+    <p class="text-justify">{{ category.desc }}</p>
+</div>
+{% else %}
+<div>
+    <img class="my_image_padding" src="{% static 'img/banner.png' %}" alt="our products"  width="1260px" height="450px" >
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">Our Products</h1>
+    <p class="text-justify">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source</p>
+</div>
+    {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card text-center"><br>
+                <a href="{{ product.get_url }}"><img class="card-img-top" src="{{ product.img.url }}" height="300px" width="100px" alt="{{ product.name }}"></a>
+                <div class="card-body">
+                     <h4>{{ product.name }}</h4>
+                    <p >{{ product.price }}</p>
+                 </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx_auto">
+        {% if products.paginator.num_pages > 1 %}
+       <br>
+        <div>
+            {% for p in products.paginator.page_range %}
+                <a href="?page={{p}}" class="btn btn-sm {% if products.number == p %} active {% endif %}">{{p}}</a>
+            {% endfor %}
+        </div>
+         {% endif %}
+    </div>
+</div>
+{% endblock %}
